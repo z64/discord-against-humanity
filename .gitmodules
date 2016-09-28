@@ -1,0 +1,3 @@
+[submodule "data/dah-cards"]
+	path = data/dah-cards
+	url = https://github.com/z64/dah-cards.git
