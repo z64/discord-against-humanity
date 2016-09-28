@@ -1,0 +1,15 @@
+---
+# Discord API application (client) ID
+app_id:
+
+# Discord API bot user token
+token:
+
+# Command prefix
+prefix:
+
+# ID of bot owner
+owner:
+
+# game the bot is playing
+game:
