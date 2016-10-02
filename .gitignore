@@ -2,6 +2,7 @@
 /data/config.yaml
 /Gemfile.lock
 /run.sh
+/data/dah.db
 
 *.gem
 *.rbc
