@@ -1,0 +1,22 @@
+Sequel.migration do
+  up do
+    create_table(:expansions) do
+      primary_key :id
+      String :name, unique: true, null: false
+      String :authors
+    end
+
+    create_table(:questions) do
+      primary_key :id
+      String :text, unique: true, null: false
+      Integer :answers, default: 1
+      foreign_key :expansion_id, on_delete: :cascade
+    end
+
+    create_table(:answers) do
+      primary_key :id
+      String :text, unique: true, null: false
+      foreign_key :expansion_id, on_delete: :cascade
+    end
+  end
+end
