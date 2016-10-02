@@ -7,18 +7,26 @@ module Bot
               help_available: false,
               description: 'syncs card database',
               usage: "#{BOT.prefix}sync") do |_event|
-        # wipe current db
-        Database::Expansion.all.map(&:destroy)
-
         # load from dah-cards submodule
         Dir.glob('data/dah-cards/*.yaml').each do |f|
           data = YAML.load_file(f)
+
+          # find existing expansion, otherwise create a new one
           expansion = Database::Expansion.find(name: data['expansion'])
-          next unless expansion.nil?
+          if expansion.nil?
+            expansion = Database::Expansion.create(name: data['expansion'])
+            if data['authors']
+              expansion.update(authors: data['authors'].join(', '))
+            else
+              expansion.update(authors: 'cah')
+            end
+          end
 
-          expansion = Database::Expansion.create(name: data['expansion'])
-          expansion.update(authors: data['authors'].join(', ')) if data['authors']
+          # wipe existing cards
+          expansion.questions.all.map(&:destroy) unless expansion.questions.count.zero?
+          expansion.answers.all.map(&:destroy) unless expansion.answers.count.zero?
 
+          # restock questions
           data['questions'].uniq.each do |c|
             answers = c.scan(/\_/).count.zero? ? 1 : c.scan(/\_/).count
             Database::Question.create(
@@ -28,6 +36,7 @@ module Bot
             )
           end
 
+          # restock answers
           data['answers'].uniq.each do |c|
             Database::Answer.create(
               text: c,
