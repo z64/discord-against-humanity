@@ -5,8 +5,11 @@ module Bot
       extend Discordrb::Commands::CommandContainer
       # Creates a new game
       command(:new) do |event|
-        unless Database::Player.where(discord_id: event.user.id)
-                               .any?(&:game_owner?)
+        if Database::Player.where(discord_id: event.user.id)
+                           .any?(&:game_owner?)
+          'You can only own one game at a time. '\
+          'Use `dah.end` to end an active game that you own.'
+        else
           # Create channels
           game_id = Database::Game.count + 1
           channels = {
@@ -42,9 +45,6 @@ module Bot
           game.save
 
           "**Created game: #{channels[:text].mention}**"
-        else
-          'You can only own one game at a time. '\
-          'Use `dah.end` to end an active game that you own.'
         end
       end
 
