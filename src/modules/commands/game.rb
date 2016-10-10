@@ -24,7 +24,8 @@ module Bot
         # Create game
         game = Database::Game.create(
           text_channel_id:  channels[:text].id,
-          voice_channel_id: channels[:voice].id
+          voice_channel_id: channels[:voice].id,
+          max_points: CONFIG.max_points
         )
 
         # Create player
