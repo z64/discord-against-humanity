@@ -9,7 +9,7 @@ module Bot
       # Check if the player owns an active
       # game they're associated with
       def game_owner?
-        self == game.owner if game.winner.nil
+        self == game.owner if game.winner.nil?
       end
 
       # Check if player is the czar
