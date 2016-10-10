@@ -58,6 +58,15 @@ module Bot
 
       # Ends a game
       command(:end) do |event|
+        player = Database::Player.where(discord_id: event.user.id)
+        unless player.nil?
+          game = Database::Game.find(owner: player)
+          unless game.nil?
+            game.end!
+            return
+          end
+        end
+        event << 'You don\'t own any active games.'
       end
     end
   end
