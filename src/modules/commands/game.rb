@@ -64,6 +64,14 @@ module Bot
               event << "`#{u.distinct}` is already part of your game!"
             else
               game.add_player Player.create(discord_id: u.id, discord_name: u.distinct)
+
+              # TODO: Create Permissions template for this
+              permissions = Discordrb::Permissions.new
+              permissions.can_read_messages = true
+              permissions.can_connect       = true
+              [game.text_channel, game.voice_channel].each do |c|
+                c.define_overwrite(u, permissions, nil)
+              end
               event << "Added #{u.distinct} to your game!"
             end
           end
@@ -81,11 +89,11 @@ module Bot
         player = Database::Player.where(discord_id: event.user.id)
                                  .find(&:game_owner?)
         game = player.game unless player.nil?
-        unless game.nil?
+        if game.nil?
+          'You don\'t own any active games.'
+        else
           game.end!
           nil
-        else
-          'You don\'t own any active games.'
         end
       end
     end
