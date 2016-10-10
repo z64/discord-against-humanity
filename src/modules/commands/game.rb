@@ -5,8 +5,7 @@ module Bot
       extend Discordrb::Commands::CommandContainer
       # Creates a new game
       command(:new) do |event|
-        if Database::Player.where(discord_id: event.user.id)
-                           .any?(&:game_owner?)
+        if Database::Game.owner(event.user.id)
           'You can only own one game at a time. '\
           'Use `dah.end` to end an active game that you own.'
         else
@@ -55,7 +54,7 @@ module Bot
           return
         end
 
-        game = Database::Game.all.find { |g| g.owner.discord_id == event.user.id }
+        game = Database::Game.owner(event.user.id)
         unless game.nil?
           event.message.mentions.each do |u|
             if game.players.any? { |p| p.discord_id == u.id }
@@ -84,7 +83,7 @@ module Bot
 
       # Ends a game
       command(:end) do |event|
-        game = Database::Game.all.find { |g| g.owner.discord_id == event.user.id }
+        game = Database::Game.owner(event.user.id)
         if game.nil?
           'You don\'t own any active games.'
         else
