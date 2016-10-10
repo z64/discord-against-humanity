@@ -6,10 +6,10 @@ module Bot
       one_to_many :player_cards
       one_to_many :plays
 
-      # Check if the player owns
-      # the game they're associated with
+      # Check if the player owns an active
+      # game they're associated with
       def game_owner?
-        self == game.owner
+        self == game.owner if game.winner.nil
       end
 
       # Check if player is the czar
