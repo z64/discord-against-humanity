@@ -50,6 +50,26 @@ module Bot
 
       # Invites users to game
       command(:invite) do |event|
+        if event.message.mentions.empty?
+          event << 'Mention a user to invite!'
+          return
+        end
+
+        player = Database::Player.where(discord_id: event.user.id)
+                                 .find(&:game_owner?)
+        game = player.game unless player.nil?
+        unless game.nil?
+          event.message.mentions.each do |u|
+            if game.players.any? { |p| p.discord_id == u.id }
+              event << "`#{u.distinct}` is already part of your game!"
+            else
+              game.add_player Player.create(discord_id: u.id, discord_name: u.distinct)
+              event << "Added #{u.distinct} to your game!"
+            end
+          end
+          return
+        end
+        'You don\'t own any active games.'
       end
 
       # Starts a game
