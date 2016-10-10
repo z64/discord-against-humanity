@@ -3,8 +3,8 @@ Sequel.migration do
     create_table(:games) do
       primary_key :id
       DateTime :timestamp
-      Integer :text_channel, unique: true
-      Integer :voice_channel, unique: true
+      Integer :text_channel_id, unique: true
+      Integer :voice_channel_id, unique: true
       foreign_key :owner_id, :players, on_delete: :set_null
       foreign_key :czar_id, :players, on_delete: :set_null
       foreign_key :winner_id, :players, on_delete: :set_null
