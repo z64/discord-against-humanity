@@ -21,7 +21,7 @@ module Bot
 
       # Fetch channel from bot cache
       def voice_channel
-        BOT.channel(voice_channel)
+        BOT.channel(voice_channel_id)
       end
     end
   end
