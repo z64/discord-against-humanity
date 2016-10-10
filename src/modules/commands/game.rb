@@ -55,9 +55,7 @@ module Bot
           return
         end
 
-        player = Database::Player.where(discord_id: event.user.id)
-                                 .find(&:game_owner?)
-        game = player.game unless player.nil?
+        game = Database::Game.all.find { |g| g.owner.discord_id == event.user.id }
         unless game.nil?
           event.message.mentions.each do |u|
             if game.players.any? { |p| p.discord_id == u.id }
@@ -86,9 +84,7 @@ module Bot
 
       # Ends a game
       command(:end) do |event|
-        player = Database::Player.where(discord_id: event.user.id)
-                                 .find(&:game_owner?)
-        game = player.game unless player.nil?
+        game = Database::Game.all.find { |g| g.owner.discord_id == event.user.id }
         if game.nil?
           'You don\'t own any active games.'
         else
