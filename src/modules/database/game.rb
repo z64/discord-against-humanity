@@ -10,7 +10,7 @@ module Bot
 
       # Returns the game owned by the associated
       # Discord ID
-      def self.owned_game(id)
+      def self.owner(id)
         all.find { |g| g.owner.discord_id == id }
       end
 
