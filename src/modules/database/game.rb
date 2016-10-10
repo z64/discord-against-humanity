@@ -8,6 +8,12 @@ module Bot
       one_to_many :players
       one_to_many :rounds
 
+      # Returns the game owned by the associated
+      # Discord ID
+      def self.owned_game(id)
+        all.find { |g| g.owner.discord_id == id }
+      end
+
       # Clean up before destruction
       def before_destroy
         delete_channels
