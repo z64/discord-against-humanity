@@ -79,6 +79,18 @@ module Bot
 
       # Starts a game
       command(:start) do |event|
+        game = Database::Game.owner(event.user.id)
+        unless game.nil?
+          if game.players.count >= CONFIG.min_players
+            event << 'we would start the game here, if Lune '\
+                     'actually implemented anything'
+          else
+            event << "You must have at least `#{CONFIG.min_players}` "\
+                     'players to start a game!'
+          end
+          return
+        end
+        'You don\'t own any active games.'
       end
 
       # Ends a game
