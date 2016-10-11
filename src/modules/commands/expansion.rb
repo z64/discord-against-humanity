@@ -12,7 +12,7 @@ module Bot
         unless expansion.nil?
           # fetch a sample
           sample = ''
-          if (expansion.answers.count.nonzero? && expansion.questions.count.nonzero?)
+          if expansion.answers.count.nonzero? && expansion.questions.count.nonzero?
             sample = expansion.questions.sample.text
             if sample.scan(/\_/).count.nonzero?
               sample.gsub!(/\_/) { "[#{expansion.answers.sample.text}]" }
@@ -46,7 +46,7 @@ module Bot
                                         .collect { |e| "`#{e.name} (#{e.cards})`" }
                                         .join(', ')
         event << '**Expansions**'
-        event << "#{expansions}"
+        event << expansions.to_s
       end
     end
   end
