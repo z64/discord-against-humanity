@@ -26,6 +26,7 @@ Sequel.migration do
       foreign_key :game_id, :games, on_delete: :cascade
       foreign_key :question_id, :questions, on_delete: :cascade
       foreign_key :winner_id, :players, on_delete: :cascade
+      foreign_key :play_id, :plays, on_delete: :cascade
     end
 
     create_table(:player_cards) do
