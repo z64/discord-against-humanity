@@ -35,6 +35,23 @@ module Bot
         voice_channel.delete
       end
 
+      # Starts a game
+      def start!
+        return if started
+
+        # Shuffle deck
+        answers = Answer.freeze.all.shuffle
+
+        # Distribute cards
+        answers.each_with_index do |a, i|
+          players.at(i % players.count)
+                 .add_player_card(PlayerCard.new(answer: a))
+        end
+
+        # Create the first round
+        add_round(Round.create)
+      end
+
       # End a game. Destroys the game
       # if it has no decided winner, otherwise
       # keep the Game for history and just clean
