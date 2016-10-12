@@ -7,7 +7,7 @@ module Bot
       many_to_one :winner, class: '::Bot::Database::Player'
       one_to_many :players
       one_to_many :rounds
-      one_to_may :expansion_pools
+      one_to_many :expansion_pools
 
       # Returns the game owned by the associated
       # Discord ID
