@@ -77,6 +77,32 @@ module Bot
         'You don\'t own any active games.'
       end
 
+      # Adds an expansion to the game
+      command(:add_expansion, min_args: 1) do |event, *names|
+        game = Database::Game.owner(event.user.id)
+        if game.nil?
+          event << 'You don\'t own any active games.'
+          return
+        end
+
+        names = names.join(' ').split(',').map(&:strip)
+        names.each do |name|
+          expansion = Database::Expansion.find(Sequel.ilike(:name, name))
+          unless expansion.nil?
+            if game.expansion_pools.find { |e| e.expansion == expansion }
+              event << "Expansion `#{expansion.name}` is already in your game."
+              next
+            else
+              game.add_expansion_pool(Database::ExpansionPool.create(expansion: expansion))
+              event << "Added expansion: `#{expansion.name}`"
+            end
+          else
+            event << "Could not find expansion: `#{name}`"
+          end
+        end
+        nil
+      end
+
       # Starts a game
       command(:start) do |event|
         game = Database::Game.owner(event.user.id)
