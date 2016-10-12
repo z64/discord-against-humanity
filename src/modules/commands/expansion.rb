@@ -45,8 +45,15 @@ module Bot
         expansions = Database::Expansion.all
                                         .collect { |e| "`#{e.name} (#{e.cards})`" }
                                         .join(', ')
-        event << '**Expansions**'
+        event << '**Available Expansions**'
         event << expansions.to_s
+
+        game = Database::Game.owner(event.user.id)
+        unless game.nil?
+          event << ''
+          event << '**Expansions in Your Game**'
+          event << game.expansion_pools.collect { |e| "`#{e.expansion.name}`" }.join(', ')
+        end
       end
     end
   end
