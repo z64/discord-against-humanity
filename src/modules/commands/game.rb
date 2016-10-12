@@ -91,7 +91,6 @@ module Bot
           unless expansion.nil?
             if game.expansion_pools.find { |e| e.expansion == expansion }
               event << "Expansion `#{expansion.name}` is already in your game."
-              next
             else
               game.add_expansion_pool(Database::ExpansionPool.create(expansion: expansion))
               event << "Added expansion: `#{expansion.name}`"
