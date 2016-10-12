@@ -103,6 +103,28 @@ module Bot
         nil
       end
 
+      # Removes an expansion from the game
+      command(:remove_expansion, min_args: 1) do |event, *names|
+        game = Database::Game.owner(event.user.id)
+        if game.nil?
+          event << 'You don\'t own any active games.'
+          return
+        end
+
+        names = names.join(' ').split(',').map(&:strip)
+        names.each do |name|
+          expansion = Database::Expansion.find(Sequel.ilike(:name, name))
+          pool = game.expansion_pools.find { |e| e.expansion == expansion }
+          if pool
+            event << "Removed expansion: `#{expansion.name}`"
+            pool.destroy
+          else
+            event << "Expansion not found: `#{expansion.name}`"
+          end
+        end
+        nil
+      end
+
       # Starts a game
       command(:start) do |event|
         game = Database::Game.owner(event.user.id)
