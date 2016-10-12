@@ -64,6 +64,23 @@ module Bot
           delete_channels
         end
       end
+
+      # Returns the Expansions currently included in the game
+      def expansions
+        expansion_pools.collext(&:expansion)
+      end
+
+      # Returns a flattened dataset of questions available
+      # in the current game's expansion pools
+      def questions
+        expansions.map(&:questions).flatten
+      end
+
+      # Returns a flattened dataset of answers available
+      # in the current game's expansion pools
+      def answers
+        expansions.map(&:answers).flatten
+      end
     end
   end
 end
