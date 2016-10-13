@@ -39,11 +39,14 @@ module Bot
       # Starts a game
       def start!
         return if started
+        next_round!
+        update(started: true)
+      end
 
+      # Creates a new round and distrubtes player cards
+      def next_round!
         players.each do |p|
-          CONFIG.hand_size.times do
-            p.add_player_card PlayerCard.create(answer: available_answers.sample)
-          end
+          p.restock_hand!
         end
 
         add_round Round.create(question: available_questions.sample)
