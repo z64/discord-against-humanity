@@ -6,6 +6,19 @@ module Bot
       one_to_many :player_cards
       one_to_many :plays
 
+      # Restock a players hand with unplayed cards
+      def restock_hand!
+        return if CONFG.hand_size == unplayed_cards.count
+        (CONFIG.hand_size - unplayed_cards.count).times do
+          add_player_card PlayerCard.create(answer: game.available_answers.sample)
+        end
+      end
+
+      # Returns player cards that haven't been played yet
+      def unplayed_cards
+        player_cards.where(played: false)
+      end
+
       # Check if the player owns an active
       # game they're associated with
       def game_owner?
