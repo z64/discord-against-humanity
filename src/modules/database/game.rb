@@ -76,10 +76,29 @@ module Bot
         expansions.map(&:questions).flatten
       end
 
+      # Returns answers that have been used in the game so far
+      def questions_in_game
+        rounds.collect(&:question)
+      end
+
+      # Returns quetsions that haven't been put into the game yet
+      def available_questions
+        questions - questions_in_game
+      end
+
       # Returns a flattened dataset of answers available
       # in the current game's expansion pools
       def answers
         expansions.map(&:answers).flatten
+      end
+
+      def answers_in_game
+        players.collect(&:player_cards).flatten.map(&:answer)
+      end
+
+      # Returns answers that haven't been put into the game yet
+      def available_answers
+        answers - answers_in_game
       end
     end
   end
