@@ -6,8 +6,8 @@ module Bot
       # Creates a new game
       command(:new) do |event|
         if Database::Game.owner(event.user.id)
-          'You can only own one game at a time. '\
-          'Use `dah.end` to end an active game that you own.'
+          'You can only host one game at a time. '\
+          'Use `dah.end` to end an active game that you host.'
         else
           # Create channels
           game_id = Database::Game.count + 1
@@ -74,14 +74,14 @@ module Bot
           end
           return
         end
-        'You don\'t own any active games.'
+        'You aren\'t hosting any active games.'
       end
 
       # Adds an expansion to the game
       command(:add_expansion, min_args: 1) do |event, *names|
         game = Database::Game.owner(event.user.id)
         if game.nil?
-          event << 'You don\'t own any active games.'
+          event << 'You aren\'t hosting any active games.'
           return
         end
 
@@ -91,7 +91,6 @@ module Bot
           unless expansion.nil?
             if game.expansion_pools.find { |e| e.expansion == expansion }
               event << "Expansion `#{expansion.name}` is already in your game."
-              next
             else
               game.add_expansion_pool(Database::ExpansionPool.create(expansion: expansion))
               event << "Added expansion: `#{expansion.name}`"
@@ -107,7 +106,7 @@ module Bot
       command(:remove_expansion, min_args: 1) do |event, *names|
         game = Database::Game.owner(event.user.id)
         if game.nil?
-          event << 'You don\'t own any active games.'
+          event << 'You aren\'t hosting any active games.'
           return
         end
 
@@ -137,14 +136,14 @@ module Bot
           end
           return
         end
-        'You don\'t own any active games.'
+        'You aren\'t hosting any active games.'
       end
 
       # Ends a game
       command(:end) do |event|
         game = Database::Game.owner(event.user.id)
         if game.nil?
-          'You don\'t own any active games.'
+          'You aren\'t hosting any active games.'
         else
           game.end!
           nil
