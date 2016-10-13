@@ -13,3 +13,12 @@ owner:
 
 # game the bot is playing
 game:
+
+# max game points
+max_points:
+
+# minimum amount of players to start a game
+min_players:
+
+# default player hand size
+hand_size:
