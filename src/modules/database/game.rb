@@ -40,17 +40,13 @@ module Bot
       def start!
         return if started
 
-        # Shuffle deck
-        answers = Answer.freeze.all.shuffle
-
-        # Distribute cards
-        answers.each_with_index do |a, i|
-          players.at(i % players.count)
-                 .add_player_card(PlayerCard.new(answer: a))
+        players.each do |p|
+          CONFIG.hand_size.times do
+            p.add_player_card PlayerCard.create(answer: available_answers.sample)
+          end
         end
 
-        # Create the first round
-        add_round(Round.create)
+        add_round Round.create(question: available_questions.sample)
       end
 
       # End a game. Destroys the game
