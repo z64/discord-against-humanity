@@ -8,15 +8,15 @@ module Bot
 
       # Restock a players hand with unplayed cards
       def restock_hand!
-        return if CONFG.hand_size == unplayed_cards.count
-        (CONFIG.hand_size - unplayed_cards.count).times do
+        return if Bot::CONFIG.hand_size == unplayed_cards.count
+        (Bot::CONFIG.hand_size - unplayed_cards.count).times do
           add_player_card PlayerCard.create(answer: game.available_answers.sample)
         end
       end
 
       # Returns player cards that haven't been played yet
       def unplayed_cards
-        player_cards.where(played: false)
+        player_cards.select { |c| c.unplayed? }
       end
 
       # Check if the player owns an active
