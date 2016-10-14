@@ -19,6 +19,11 @@ module Bot
         player_cards.select { |c| c.unplayed? }
       end
 
+      # Returns player cards that have been played
+      def played_cards
+        player_cards.select { |c| c.played? }
+      end
+
       # Check if the player owns an active
       # game they're associated with
       def game_owner?
