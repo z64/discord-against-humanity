@@ -43,6 +43,15 @@ module Bot
         player_cards.select { |c| c.played? }
       end
 
+      # Plays a player's card to the current Round
+      def play_card(n)
+        Play.create(
+          player_card: unplayed_cards(n),
+          round: game.current_round
+        )
+        unplayed_cards(n).update(played: true)
+      end
+
       # Check if the player owns an active
       # game they're associated with
       def game_owner?
