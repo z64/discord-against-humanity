@@ -45,10 +45,7 @@ module Bot
 
       # Creates a new round and distrubtes player cards
       def next_round!
-        players.each do |p|
-          p.restock_hand!
-        end
-
+        players.each(&:restock_hand!)
         add_round Round.create(question: available_questions.sample)
       end
 
