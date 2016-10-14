@@ -27,7 +27,7 @@ module Bot
              "Round ##{game.rounds.count} question: **#{question}**"
         m << "**Your Cards:**"
         unplayed_cards.each_with_index do |c, i|
-          m << "**#{i+1}.** #{c.answer.text}"
+          m << "**#{i+1}.** ▫ #{c.answer.text}"
         end
         m << 'Respond with `pick [number]` to pick a card for this round.'
         discord_user.pm(m.join("\n"))
