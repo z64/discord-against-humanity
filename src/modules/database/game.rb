@@ -52,6 +52,11 @@ module Bot
         add_round Round.create(question: available_questions.sample)
       end
 
+      # Returns the current round
+      def current_round
+        rounds.last
+      end
+
       # End a game. Destroys the game
       # if it has no decided winner, otherwise
       # keep the Game for history and just clean
