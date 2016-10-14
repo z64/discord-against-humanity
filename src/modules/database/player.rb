@@ -14,6 +14,25 @@ module Bot
         end
       end
 
+      # Fetches Discord user from bot cache
+      def discord_user
+        BOT.user(discord_id)
+      end
+
+      # Direct message the player their unplayed cards
+      def dm_unplayed
+        question = game.current_round.question.text
+        m = []
+        m << "`[game #{game.id}]` | "\
+             "Round ##{game.rounds.count} question: **#{question}**"
+        m << "**Your Cards:**"
+        unplayed_cards.each_with_index do |c, i|
+          m << "**#{i+1}.** #{c.answer.text}"
+        end
+        m << 'Respond with `pick [number]` to pick a card for this round.'
+        discord_user.pm(m.join("\n"))
+      end
+
       # Returns player cards that haven't been played yet
       def unplayed_cards
         player_cards.select { |c| c.unplayed? }
