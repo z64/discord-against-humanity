@@ -44,12 +44,8 @@ module Bot
       end
 
       # Plays a player's card to the current Round
-      def play_card(n)
-        Play.create(
-          player_card: unplayed_cards(n),
-          round: game.current_round
-        )
-        unplayed_cards(n).update(played: true)
+      def play_card(number)
+        unplayed_cards[number].play!
       end
 
       # Check if the player owns an active
