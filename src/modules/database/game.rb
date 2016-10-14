@@ -77,7 +77,7 @@ module Bot
         expansions.map(&:questions).flatten
       end
 
-      # Returns answers that have been used in the game so far
+      # Returns questions that have been used in the game so far
       def questions_in_game
         rounds.collect(&:question)
       end
@@ -93,6 +93,7 @@ module Bot
         expansions.map(&:answers).flatten
       end
 
+      # Returns answers that have been used in the game so far
       def answers_in_game
         players.collect(&:player_cards).flatten.map(&:answer)
       end
