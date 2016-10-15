@@ -131,6 +131,7 @@ module Bot
           if game.players.count >= CONFIG.min_players
             game.start!
             event.bot.send_message(game.text_channel, "**@everyone, `dah game ##{game.id}` has started!**")
+            game.current_round.update_message!
           else
             event << "You must have at least `#{CONFIG.min_players}` "\
                      'players to start a game!'
