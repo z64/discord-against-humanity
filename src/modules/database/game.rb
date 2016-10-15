@@ -20,6 +20,11 @@ module Bot
         delete_channels
       end
 
+      # Get a formatted name of the game
+      def name
+        "game_#{id}"
+      end
+
       # Fetch channel from bot cache
       def text_channel
         BOT.channel(text_channel_id)
