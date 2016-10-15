@@ -30,7 +30,7 @@ module Bot
         question = game.current_round.question.text
         m = []
         m << "`[#{game.name}]` | "\
-             "Round ##{game.rounds.count} question: **#{question}**"
+             "Round ##{game.rounds.count} Question: **#{question}**"
         m << "**Your Cards:**"
         unplayed_cards.each_with_index do |c, i|
           m << "**#{i+1}.** ▫ #{c.answer.text}"
