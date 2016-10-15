@@ -14,6 +14,12 @@ module Bot
         end
       end
 
+      # Returns whether the player has made
+      # enough responses to satisfy the current round.
+      def enough_responses?
+        game.current_round.response(self).count >= game.current_round.question.answers
+      end
+
       # Fetches Discord user from bot cache
       def discord_user
         BOT.user(discord_id)
