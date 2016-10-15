@@ -23,7 +23,7 @@ module Bot
       def dm_unplayed
         question = game.current_round.question.text
         m = []
-        m << "`[game #{game.id}]` | "\
+        m << "`[#{game.name}]` | "\
              "Round ##{game.rounds.count} question: **#{question}**"
         m << "**Your Cards:**"
         unplayed_cards.each_with_index do |c, i|
