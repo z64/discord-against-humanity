@@ -127,15 +127,27 @@ module Bot
       # Starts a game
       command(:start) do |event|
         game = Database::Game.owner(event.user.id)
+        if game.started?
+          event << 'Your game has already started!'
+          return
+        end
+
         unless game.nil?
-          if game.players.count >= CONFIG.min_players
-            game.start!
-            event.bot.send_message(game.text_channel, "**@everyone, `dah game ##{game.id}` has started!**")
-            game.current_round.update_message!
-          else
+          if game.expansion_pools.empty?
+            event << 'You must have at least one expansion '\
+                     'added to your game to start a game!'
+            return
+          end
+
+          if game.players.count < CONFIG.min_players
             event << "You must have at least `#{CONFIG.min_players}` "\
                      'players to start a game!'
+            return
           end
+
+          game.start!
+          event.bot.send_message(game.text_channel, "**@everyone, `dah game ##{game.id}` has started!**")
+          game.current_round.update_message!
           return
         end
         'You aren\'t hosting any active games.'
