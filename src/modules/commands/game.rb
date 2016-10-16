@@ -78,7 +78,7 @@ module Bot
       end
 
       # Adds an expansion to the game
-      command(:add, min_args: 1) do |event, *names|
+      command([:add, :add_expansion], min_args: 1) do |event, *names|
         game = Database::Game.owner(event.user.id)
         if game.nil?
           event << 'You aren\'t hosting any active games.'
@@ -103,7 +103,7 @@ module Bot
       end
 
       # Removes an expansion from the game
-      command(:remove, min_args: 1) do |event, *names|
+      command([:remove, :remove_expansion], min_args: 1) do |event, *names|
         game = Database::Game.owner(event.user.id)
         if game.nil?
           event << 'You aren\'t hosting any active games.'
