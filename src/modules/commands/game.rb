@@ -105,8 +105,16 @@ module Bot
           return
         end
 
-        names = names.join(' ').split(',').map(&:strip)
-        names.each do |name|
+        names = names.join(' ')
+        if names.casecmp('all').zero?
+          Database::Expansion.all.each do |e|
+            game.add_expansion_pool(Database::ExpansionPool.create(expansion: e))
+          end
+          event << 'Added all available expansions to your current game.'
+          return
+        end
+
+        names.split(',').map(&:strip).each do |name|
           expansion = Database::Expansion.find(Sequel.ilike(:name, name))
           unless expansion.nil?
             if game.expansion_pools.find { |e| e.expansion == expansion }
@@ -136,8 +144,14 @@ module Bot
           return
         end
 
-        names = names.join(' ').split(',').map(&:strip)
-        names.each do |name|
+        names = names.join(' ')
+        if names.casecmp('all').zero?
+          game.remove_all_expansion_pools
+          event << 'Removed all expansions from your current game.'
+          return
+        end
+
+        names.split(',').map(&:strip).each do |name|
           expansion = Database::Expansion.find(Sequel.ilike(:name, name))
           pool = game.expansion_pools.find { |e| e.expansion == expansion }
           if pool
