@@ -128,7 +128,7 @@ module Bot
       command(:start) do |event|
         game = Database::Game.owner(event.user.id)
 
-        if game.started?
+        if game.started
           event << 'Your game has already started!'
           return
         end
