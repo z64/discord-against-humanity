@@ -99,6 +99,12 @@ module Bot
           return
         end
 
+        if game.started
+          event << 'You can\'t modify your expanions after a game '\
+                   'has been started!'
+          return
+        end
+
         names = names.join(' ').split(',').map(&:strip)
         names.each do |name|
           expansion = Database::Expansion.find(Sequel.ilike(:name, name))
@@ -121,6 +127,12 @@ module Bot
         game = Database::Game.owner(event.user.id)
         if game.nil?
           event << 'You aren\'t hosting any active games.'
+          return
+        end
+
+        if game.started
+          event << 'You can\'t modify your expanions after a game '\
+                   'has been started!'
           return
         end
 
