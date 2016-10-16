@@ -9,6 +9,12 @@ module Bot
       one_to_many :rounds
       one_to_many :expansion_pools
 
+      # Set up model before creation
+      def before_create
+        super
+        self.timestamp ||= Time.now
+      end
+
       # Returns the game owned by the associated
       # Discord ID
       def self.owner(id)
