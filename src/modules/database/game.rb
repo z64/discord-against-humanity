@@ -58,7 +58,13 @@ module Bot
         czar = players.at(rounds.count % players.count)
         add_round Round.create(question: available_questions.sample, czar: czar)
         players.each(&:restock_hand!)
-        players.each(&:dm_unplayed)
+        players.each do |p|
+          unless player.czar?
+            p.dm_unplayed
+          else
+            p.dm_czar
+          end
+        end
       end
 
       # Returns the current round
