@@ -39,6 +39,12 @@ module Bot
         discord_user.pm(m.join("\n"))
       end
 
+      # Tells the player that they are the czar
+      def dm_czar
+        return unless czar?
+        discord_user.pm("`[#{game.name}]` | Round ##{game.rounds.count} | **You are the Czar this round.**")
+      end
+
       # Returns player cards that haven't been played yet
       def unplayed_cards
         player_cards.select { |c| c.unplayed? }
