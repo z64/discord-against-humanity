@@ -56,7 +56,8 @@ module Bot
 
       # Creates a new round and distrubtes player cards
       def next_round!
-        add_round Round.create(question: available_questions.sample)
+        czar = players.at(rounds.count % players.count)
+        add_round Round.create(question: available_questions.sample, czar: czar)
         players.each(&:restock_hand!)
         players.each(&:dm_unplayed)
       end
