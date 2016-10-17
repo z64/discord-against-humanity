@@ -9,6 +9,7 @@ module Bot
               min_args: 1) do |event, *name|
         name = name.join(' ')
         expansion = Database::Expansion.find(Sequel.ilike(:name, name))
+        # TODO: rework below to use #substitute
         unless expansion.nil?
           # fetch a sample
           sample = ''
