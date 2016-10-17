@@ -5,6 +5,7 @@ module Bot
       many_to_one :game
       one_to_many :plays
       many_to_one :play
+      many_to_one :czar, class: '::Bot::Database::Player'
       many_to_one :question
 
       # Fetch round message from cache
