@@ -39,7 +39,7 @@ module Bot
 
       # Determines if we have enough responses to advance the round
       def enough_responses?
-        game.players.map(&:enough_responses?).count(true) == game.players.count
+        game.players.map(&:enough_responses?).count(true) == game.players.count - 1
       end
 
       # Generate a Round message. This will display a numbered
