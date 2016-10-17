@@ -17,7 +17,11 @@ module Bot
       # Substitutes a set of answers
       # into a question's slots
       def substitute(answers)
-        text.gsub(/_/) { "`#{answers.shift.text}`" }
+        if text.scan(/_/).count.zero?
+          "#{text} `#{answers.first}`"
+        else
+          text.gsub(/_/) { "`#{answers.shift.text}`" }
+        end
       end
     end
   end
