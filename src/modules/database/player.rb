@@ -63,7 +63,7 @@ module Bot
       # Check if player is the czar
       # of the game they're associated with
       def czar?
-        self == game.czar
+        self == game.current_round.czar
       end
     end
   end
