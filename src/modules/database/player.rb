@@ -27,7 +27,7 @@ module Bot
 
       # Direct message the player their unplayed cards
       def dm_unplayed
-        question = game.current_round.question.text
+        question = game.current_round.question.print
         m = []
         m << "`[#{game.name}]` | "\
              "Round ##{game.rounds.count} Question: **#{question}**"

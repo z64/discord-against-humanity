@@ -48,7 +48,7 @@ module Bot
       def generate_message
         m = []
         m << "`[#{game.name}]` | Round ##{game.rounds.count} Question: "\
-             "**#{question.text}**"
+             "**#{question.print}**"
 
         if question.answers > 1
           m << "Players, pick #{question.answers} cards."
