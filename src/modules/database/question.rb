@@ -9,6 +9,11 @@ module Bot
         Discordrb::LOGGER.info("created question #{inspect}")
       end
 
+      # Format an answer to evade markdown
+      def print
+        text.gsub(/_/) { '\_' }
+      end
+
       # Substitutes a set of answers
       # into a question's slots
       def substitute(answers)
