@@ -65,6 +65,16 @@ module Bot
       def czar?
         self == game.current_round.czar
       end
+
+      # Returns if the Player's game is active
+      def active?
+        game.winner.nil?
+      end
+
+      # Finds an active player by ID
+      def self.find_active(id)
+        where(discord_id: id).find { |p| p.active? }
+      end
     end
   end
 end
