@@ -57,6 +57,7 @@ module Bot
       def next_round!
         czar = players.at(rounds.count % players.count)
         add_round Round.create(question: available_questions.sample, czar: czar)
+        current_round.update_message!
         players.each(&:restock_hand!)
         players.each do |p|
           unless p.czar?
