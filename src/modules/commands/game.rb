@@ -186,9 +186,8 @@ module Bot
             return
           end
 
-          game.start!
           event.bot.send_message(game.text_channel, "**@everyone, `dah game ##{game.id}` has started!**")
-          game.current_round.update_message!
+          game.start!
           return
         end
         'You aren\'t hosting any active games.'
