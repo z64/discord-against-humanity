@@ -17,6 +17,7 @@ module Bot
               unless response.nil?
                 player.game.current_round.update(winner: response.first.player)
                 player.game.current_round.update_message!
+                response.first.player.update_score!
               else
                 event.respond(':negative_squared_cross_mark:')
               end
@@ -26,9 +27,9 @@ module Bot
               card = player.unplayed_cards.at(number)
               unless card.nil? || player.enough_responses? || player.game.current_round.enough_responses?
                 card.play!
-                player.game.current_round.update_message!
                 event.respond(':ballot_box_with_check:')
                 if player.game.current_round.enough_responses?
+                  player.game.current_round.update_message!
                   player.game.text_channel.send_message(
                     "#{player.game.current_round.czar.discord_user.mention}, all cards are in!\n"\
                     "Pick a winning card with `pick [number]`!"
