@@ -54,7 +54,7 @@ module Bot
       # Tells the player that they are the czar
       def announce_czar
         return unless czar?
-        game.text_channel.send_message("**#{discord_user.mention} is the Czar this round.. :mega:**")
+        game.text_channel.send_message("**#{discord_user.mention} is the Czar this round... :mega:**")
       end
 
       # Returns player cards that haven't been played yet
