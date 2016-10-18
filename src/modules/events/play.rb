@@ -4,10 +4,6 @@ module Bot
     module Play
       extend Discordrb::EventContainer
 
-      # Plays a card
-      message(starts_with: /play/i) do |event|
-      end
-
       # Picks a winning card
       message(start_with: /pick/i) do |event|
         number = event.message.content.split(' ').last.to_i - 1
