@@ -11,7 +11,7 @@ module Bot
 
       # Format an answer to evade markdown
       def print
-        text.gsub(/_/) { '\_' }
+        text.gsub(/_/) { '\_\_\_' }
       end
 
       # Substitutes a set of answers
