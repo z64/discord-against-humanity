@@ -17,10 +17,12 @@ module Bot
       # Updates a player's points
       def update_score!
         update(score: game.rounds.count { |g| g.winner == self })
+        update_nick!
       end
 
       def update_nick!
         discord_user.on(game.text_channel.server).nick = "#{discord_user.name} (#{score} AP)"
+      rescue
       end
 
       # Returns whether the player has made

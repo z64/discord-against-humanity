@@ -60,7 +60,6 @@ module Bot
         current_round.update_message!
         players.each do |p|
           p.restock_hand!
-          p.update_nick!
           unless p.czar?
             p.dm_unplayed
           else
