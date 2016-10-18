@@ -19,6 +19,10 @@ module Bot
         update(score: game.rounds.count { |g| g.winner == self })
       end
 
+      def update_nick!
+        discord_user.on(game.text_channel.server).nick = "#{discord_user.name} (#{score} AP)"
+      end
+
       # Returns whether the player has made
       # enough responses to satisfy the current round.
       def enough_responses?
