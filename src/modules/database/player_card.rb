@@ -11,7 +11,6 @@ module Bot
           player_card: self,
           round: player.game.current_round
         )
-        update(played: true)
       end
 
       # If the card hasn't been played
