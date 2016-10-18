@@ -8,7 +8,7 @@ module Bot
       message(start_with: /pick/i) do |event|
         number = event.message.content.split(' ').last.to_i - 1
         player = Database::Player.find_active(event.user.id)
-        unless player.nil? || !player.game.started
+        unless player.nil? || !player.game.started || !player.game.winner.nil?
           if player.czar?
             unless player.game.current_round.enough_responses?
               event.respond('Still waiting for other players to pick cards.. :eyes:')
@@ -18,6 +18,13 @@ module Bot
                 player.game.current_round.update(winner: response.first.player)
                 player.game.current_round.update_message!
                 response.first.player.update_score!
+                player.game.text_channel.send_message(
+                  "**#{player.game.current_round.question.substitute(response.map(&:answer))}** "\
+                  "~#{response.first.player.discord_user.mention} has won! :tada:",
+                  player.game.use_tts
+                )
+                sleep 10
+                player.game.next_round!
               else
                 event.respond(':negative_squared_cross_mark:')
               end
