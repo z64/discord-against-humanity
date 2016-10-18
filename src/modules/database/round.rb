@@ -6,6 +6,7 @@ module Bot
       one_to_many :plays
       many_to_one :play
       many_to_one :czar, class: '::Bot::Database::Player'
+      many_to_one :winner, class: '::Bot::Database::Player'
       many_to_one :question
 
       # Fetch round message from cache
@@ -61,10 +62,10 @@ module Bot
           m << "\n**Responses:**"
           responses.each_with_index do |rs, i|
             text = rs.map { |r| "`#{r.answer.text}`" }.join(', ')
-            if play.nil?
+            if winner.nil?
               m << "**#{i + 1}.** ▫ #{text}"
             else
-              m << "**#{i + 1}.** ▫ #{text} `#{r.player.discord_name}`"
+              m << "**#{i + 1}.** ▫ #{text} (`#{rs.first.player.discord_name}`)"
             end
           end
         end
