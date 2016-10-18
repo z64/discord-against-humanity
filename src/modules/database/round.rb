@@ -18,7 +18,7 @@ module Bot
         if message.nil?
           m = game.text_channel.send_message(generate_message)
           update(message_id: m.id)
-          m.pin
+          # m.pin
         else
           message.edit(generate_message)
         end
