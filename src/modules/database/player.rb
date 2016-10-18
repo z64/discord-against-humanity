@@ -14,6 +14,11 @@ module Bot
         end
       end
 
+      # Updates a player's points
+      def update_score!
+        update(score: game.rounds.count { |g| g.winner == self })
+      end
+
       # Returns whether the player has made
       # enough responses to satisfy the current round.
       def enough_responses?
