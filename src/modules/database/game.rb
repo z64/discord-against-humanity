@@ -63,7 +63,7 @@ module Bot
           unless p.czar?
             p.dm_unplayed
           else
-            p.dm_czar
+            p.announce_czar
           end
         end
       end
