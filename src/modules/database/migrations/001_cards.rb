@@ -8,7 +8,7 @@ Sequel.migration do
 
     create_table(:questions) do
       primary_key :id
-      String :text, unique: true, null: false
+      String :text, null: false
       Integer :answers, default: 1
       foreign_key :expansion_id, :expansions, on_delete: :cascade
     end
