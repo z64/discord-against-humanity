@@ -1,9 +1,9 @@
 Sequel.migration do
   up do
-    add_column :discord_nick, :players, String
+    add_column :players, :discord_nick, String
   end
 
   down do
-    drop_column :discord_nick, :players
+    drop_column :players, :discord_nick 
   end
 end
