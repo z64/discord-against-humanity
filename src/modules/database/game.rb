@@ -101,6 +101,25 @@ module Bot
         rounds.collect(&:question)
       end
 
+      # Returns whether we have enough questions to satisfy the number of
+      # points desired for the game
+      def enough_questions?
+        questions.count >= max_points
+      end
+
+      # Returns we have enough answers (probably) to play the game without
+      # running out of cards
+      def enough_answers?
+        return false if questions.empty?
+        answers.count > questions.collect(&:answers).max * players.count * CONFIG.hand_size * max_points
+      end
+
+      # Returns whether we have enough cards (questions & answers) to
+      # run a full game
+      def enough_cards?
+        enough_questions? && enough_answers?
+      end
+
       # Returns quetsions that haven't been put into the game yet
       def available_questions
         questions - questions_in_game
