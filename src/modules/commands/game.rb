@@ -186,7 +186,7 @@ module Bot
             return
           end
 
-          event.bot.send_message(game.text_channel, "**@everyone, `dah game ##{game.id}` has started!**")
+          event.bot.send_message(game.text_channel, "**@here, `dah game ##{game.id}` has started!**")
           game.start!
           return
         end
