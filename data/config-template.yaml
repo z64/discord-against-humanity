@@ -1,6 +1,6 @@
 ---
 # Discord API application (client) ID
-app_id:
+client_id:
 
 # Discord API bot user token
 token:
