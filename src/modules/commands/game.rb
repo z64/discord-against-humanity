@@ -103,7 +103,7 @@ module Bot
         names = names.join(' ')
         if names.casecmp('all').zero?
           Database::Expansion.all.each do |e|
-            game.add_expansion_pool(Database::ExpansionPool.create(expansion: e))
+            game.add_expansion_pool expansion: e
           end
           event << 'Added all available expansions to your current game.'
           return
