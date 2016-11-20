@@ -54,10 +54,7 @@ module Bot
 
       # Displays active games and their owners
       command(:games) do |event|
-        if Database::Game.active.empty?
-          event << 'No active games..'
-          return
-        end
+        next 'No active games..' if Database::Game.active.empty?
 
         games = Database::Game.active.collect do |g|
           "`#{g.owner.discord_name} (#{g.server.name} #{g.name}, #{g.players.count} players)`"
@@ -68,10 +65,7 @@ module Bot
 
       # Invites users to game
       command(:invite) do |event|
-        if event.message.mentions.empty?
-          event << 'Mention a user to invite!'
-          return
-        end
+        next 'Mention a user to invite!' if event.message.mentions.empty?
 
         game = Database::Game.owner(event.user.id)
         unless game.nil?
@@ -101,16 +95,10 @@ module Bot
       # Adds an expansion to the game
       command([:add, :add_expansion], min_args: 1) do |event, *names|
         game = Database::Game.owner(event.user.id)
-        if game.nil?
-          event << 'You aren\'t hosting any active games.'
-          return
-        end
 
-        if game.started
-          event << 'You can\'t modify your expanions after a game '\
-                   'has been started!'
-          return
-        end
+        next 'You aren\'t hosting any active games.' if game.nil?
+
+        next 'You can\'t modify your expanions after a game has been started!' if game.started
 
         names = names.join(' ')
         if names.casecmp('all').zero?
@@ -140,16 +128,10 @@ module Bot
       # Removes an expansion from the game
       command([:remove, :remove_expansion], min_args: 1) do |event, *names|
         game = Database::Game.owner(event.user.id)
-        if game.nil?
-          event << 'You aren\'t hosting any active games.'
-          return
-        end
 
-        if game.started
-          event << 'You can\'t modify your expanions after a game '\
-                   'has been started!'
-          return
-        end
+        next 'You aren\'t hosting any active games.' if game.nil?
+
+        next 'You can\'t modify your expanions after a game has been started!' if game.started
 
         names = names.join(' ')
         if names.casecmp('all').zero?
@@ -176,28 +158,17 @@ module Bot
         game = Database::Game.owner(event.user.id)
 
         unless game.nil?
-          if game.started
-            event << 'Your game has already started!'
-            return
-          end
+          next 'Your game has already started!' if game.started
 
-          if game.expansion_pools.empty?
-            event << 'You must have at least one expansion '\
-                     'added to your game to start a game!'
-            return
-          end
+          next 'You must have at least one expansion added to your game to start a game!' if game.expansion_pools.empty?
+
+          next "You must have at least `#{CONFIG.min_players}` players to start a game!" if game.players.count < CONFIG.min_players
 
           unless game.enough_cards?
             event << 'Your game doesn\'t have enough cards '\
                      'to complete a full game! Please add more '\
                      'expansions with `dah.add`. Use `dah.expansions` '\
                      'to see a list of what you can pick from.'
-            return
-          end
-
-          if game.players.count < CONFIG.min_players
-            event << "You must have at least `#{CONFIG.min_players}` "\
-                     'players to start a game!'
             return
           end
 
