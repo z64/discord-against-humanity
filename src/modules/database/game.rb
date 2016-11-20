@@ -14,10 +14,15 @@ module Bot
         self.timestamp ||= Time.now
       end
 
-      # Returns the game owned by the associated
-      # Discord ID
+      # Returns the collection of active games
+      def self.active
+        where(winner_id: nil).all
+      end
+
+      # Returns the active game owned
+      # by the associated Discord ID
       def self.owner(id)
-        all.find { |g| g.owner.discord_id == id }
+        all.find { |g| g.owner.discord_id == id && g.winner.nil? }
       end
 
       # Clean up before destruction

@@ -49,12 +49,12 @@ module Bot
 
       # Displays active games and their owners
       command(:games) do |event|
-        if Database::Game.count.zero?
+        if Database::Game.active.empty?
           event << 'No active games..'
           return
         end
 
-        games = Database::Game.all.collect do |g|
+        games = Database::Game.active.collect do |g|
           "`#{g.owner.discord_name} (#{g.name}, #{g.players.count} players)`"
         end.join(' ')
 
@@ -204,13 +204,10 @@ module Bot
 
       # Ends a game
       command(:end) do |event|
-        game = Database::Game.owner(event.user.id)
-        if game.nil?
-          'You aren\'t hosting any active games.'
-        else
-          game.end!
-          nil
-        end
+        game = Database::Game.find text_channel_id: event.channel.id
+        next 'This isn\'t a channel with an active game..' if game.nil?
+        game.end! if game.owner.discord_id == event.user.id
+        nil
       end
     end
   end
