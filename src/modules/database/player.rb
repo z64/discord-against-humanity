@@ -28,6 +28,12 @@ module Bot
         # Fail silently if we can't change nicks
       end
 
+      def reset_nick!
+        discord_user.on(game.text_channel.server).nick = discord_nick
+      rescue
+        # Fail silently if we can't change nicks
+      end
+
       # Returns whether the player has made
       # enough responses to satisfy the current round.
       def enough_responses?
