@@ -56,24 +56,26 @@ module Bot
           state = :COMPLETE if game.winner
 
           state = round.enough_responses? ? :ENOUGH_RESPONSES : :WAITING_RESPONSES
+          state = :ENOUGH_RESPONSES if player.enough_responses?
 
           state = :INPUT_ERROR if input <= 0
           case identity
           when :PLAYER
             state = :INPUT_ERROR if input > cards.count
           when :CZAR
-            state = :INPUT_ERROR if input > responses.count
+            state = :INPUT_ERROR if input > responses.count && state == :ENOUGH_RESPONSES
           end
 
           # Derive game verb
           verb = PLAY[[identity, state]]
 
-          puts verb.nil?
+          Discordrb::LOGGER.info "game event! #{identity}, #{state} => #{verb}"
 
           # Perform action
           case verb
           when :WAITING_RESPONSE
             event.respond '❎ Still waiting for player responses..'
+            next
 
           when :EXECUTE_PICK
             response = responses[input - 1]
@@ -82,17 +84,15 @@ module Bot
             response.first.player.update_score!
             game.text_channel.send_message(
               "**#{round.question.substitute(response.map(&:answer))}**\n"\
-              "#{response.first.player.discord_user.mention} has won! 🎉"
+              "#{response.first.player.discord_user.mention} has won this round!🎉"
             )
-            sleep 10
-            game.next_round!
-            next
 
           when :EXECUTE_PLAY
             if event.channel.pm?
               card = cards[input - 1]
               if round.plays.collect(&:player_card).include? card
                 event.respond '❎ You\'ve already picked this card.'
+                next
               else
                 card.play!
                 event.respond '☑️'
@@ -104,6 +104,7 @@ module Bot
             next
 
           when :IDLE
+            next
           end
 
           if round.enough_responses?
@@ -113,6 +114,19 @@ module Bot
               "#{round.czar.discord_user.mention}, all cards are in!\n"\
               'Pick a winning card with `pick [number]`'
             )
+          end
+
+          winner = Database::Game[game.id].winner
+          if winner
+            game.update winner: winner
+            game.text_channel.send_message(
+              "🎉 **@here, #{winner.discord_user.mention} has won the game!** 🎉\n\n"\
+              "#{game.owner.discord_user.mention} When you're done,"\
+              ' run `dah.end` to close the game and this channel.'
+            )
+          elsif verb == :EXECUTE_PICK
+            sleep 10
+            game.next_round!
           end
         end
       end
