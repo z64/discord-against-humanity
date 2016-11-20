@@ -69,8 +69,6 @@ module Bot
           # Derive game verb
           verb = PLAY[[identity, state]]
 
-          Discordrb::LOGGER.info "game event! #{identity}, #{state} => #{verb}"
-
           # Perform action
           case verb
           when :WAITING_RESPONSE
