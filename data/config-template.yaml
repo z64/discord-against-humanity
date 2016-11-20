@@ -1,5 +1,5 @@
 ---
-# Discord API application (client) ID
+# Discord API client ID
 client_id:
 
 # Discord API bot user token
@@ -12,13 +12,53 @@ prefix:
 owner:
 
 # game the bot is playing
-game:
+game: Discord Against Humanity
 
-# max game points
-max_points:
+# default max points for a game
+max_points: 10
 
 # minimum amount of players to start a game
-min_players:
+min_players: 3
+
+# maximum amount of players in a game
+max_players: 10
 
 # default player hand size
-hand_size:
+hand_size: 8
+
+# Game tutorial that's printed in new game channels
+tutorial:
+  - 🗳 **__How to Play__**
+  -
+  - 🛠 **Game Setup**
+  - 1. The first step is to invite your friends to this game using
+  - '`dah.invite @user` in any channel to invite them to your fresh new game.'
+  - '*You can currently have up to 10 awesome people per game.*'
+  -
+  - "2. Add expansions to your game! Use `dah.expansions` to see what's available"
+  - and use `dah.add name_of_expansion` to add it to your game.
+  - '*(Protip: want all of the cards? Use `dah.add all`!)*'
+  - Remove expansions with.. you guessed it! `dah.remove`
+  -
+  - 3. Ready to play? Run `dah.start` and let's get started!
+  -
+  - 🙇 **As a player..**
+  - 1. Each round, I will direct-message you your cards.
+  -
+  - 2. Reply in our DM with `pick (a number)` to pick a card that you think fits the question best!
+  - If a question has multiple answers, say `pick (number)` multiple times in the order you want
+  - your cards to appear!
+  -
+  - 3. Wait for the Czar to pick the winning card
+  -
+  - 👑 **As the Czar..**
+  - 1. Wait for other players to submit their choices.
+  - I'll let you know when we've got all the cards we need!
+  -
+  - 2. Pick the card you think should win by saying `pick (a number)` in this channel!
+  -
+  - 🔰 **Need help? Questions? Problems?**
+  - Join our official discord and ask `Lune#2639` or any of our staff for a hand!
+  - https://discord.gg/79bFsMa
+  -
+  - '***Have fun!***'
