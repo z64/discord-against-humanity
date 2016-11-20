@@ -17,6 +17,7 @@ module Bot
       # Updates a player's points
       def update_score!
         update(score: game.rounds.count { |g| g.winner == self })
+        game.update(winner: self) if score > game.max_points
         update_nick!
       end
 
