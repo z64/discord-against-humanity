@@ -21,6 +21,7 @@ module Bot
           permissions.can_connect       = true
 
           channels.each do |_, c|
+            c.define_overwrite(event.bot.profile, permissions, nil)
             c.define_overwrite(event.user, permissions, nil)
             c.define_overwrite(event.server.roles.first, nil, permissions)
           end
