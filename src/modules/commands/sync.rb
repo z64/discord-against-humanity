@@ -6,7 +6,9 @@ module Bot
       command([:sync,:hack_ur_stuff],
               help_available: false,
               description: 'syncs card database',
-              usage: "#{BOT.prefix}sync") do |_event|
+              usage: "#{BOT.prefix}sync") do |event|
+        event.respond 'syncronizing cards, this may take a moment..'
+
         # load from dah-cards submodule
         Dir.glob('data/dah-cards/*.yaml').each do |f|
           data = YAML.load_file(f)
