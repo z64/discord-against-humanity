@@ -204,13 +204,10 @@ module Bot
 
       # Ends a game
       command(:end) do |event|
-        game = Database::Game.find(text_channel_id: event.channel.id, owner_id: event.user.id)
-        if game.nil?
-          'You aren\'t hosting any active games.'
-        else
-          game.end!
-          nil
-        end
+        game = Database::Game.find text_channel_id: event.channel.id
+        next 'This isn\'t a channel with an active game..' if game.nil?
+        game.end! if game.owner.discord_id == event.user.id
+        nil
       end
     end
   end
