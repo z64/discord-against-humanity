@@ -40,6 +40,12 @@ module Bot
         game.current_round.response(self).count >= game.current_round.question.answers
       end
 
+      # Returns the amount of responses left until this player
+      # has supplied enough responses
+      def remaining_responses
+        game.current_round.question.answers - game.current_round.response(self).count
+      end
+
       # Fetches Discord user from bot cache
       def discord_user
         BOT.user(discord_id)
