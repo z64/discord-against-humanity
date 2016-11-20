@@ -169,12 +169,12 @@ module Bot
       command(:start) do |event|
         game = Database::Game.owner(event.user.id)
 
-        if game.started
-          event << 'Your game has already started!'
-          return
-        end
-
         unless game.nil?
+          if game.started
+            event << 'Your game has already started!'
+            return
+          end
+
           if game.expansion_pools.empty?
             event << 'You must have at least one expansion '\
                      'added to your game to start a game!'
