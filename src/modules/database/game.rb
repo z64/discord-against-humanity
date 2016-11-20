@@ -35,6 +35,11 @@ module Bot
         "game_#{id}"
       end
 
+      # Fetch server from bot cache
+      def server
+        BOT.server(server_id)
+      end
+
       # Fetch channel from bot cache
       def text_channel
         BOT.channel(text_channel_id)

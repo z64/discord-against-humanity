@@ -55,7 +55,7 @@ module Bot
         end
 
         games = Database::Game.active.collect do |g|
-          "`#{g.owner.discord_name} (#{g.name}, #{g.players.count} players)`"
+          "`#{g.owner.discord_name} (#{server.name} #{g.name}, #{g.players.count} players)`"
         end.join(' ')
 
         "**Active Games:** #{games}"
