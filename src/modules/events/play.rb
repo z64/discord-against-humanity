@@ -93,7 +93,11 @@ module Bot
                 next
               else
                 card.play!
-                event.respond '☑️'
+                if player.remaining_responses.zero?
+                  event.respond '☑️'
+                else
+                  event.respond "☑️ (pick #{player.remaining_responses} more)"
+                end
               end
             end
 
