@@ -29,6 +29,7 @@ module Bot
           game = Database::Game.create(
             text_channel_id:  channels[:text].id,
             voice_channel_id: channels[:voice].id,
+            server_id: event.server.id,
             max_points: CONFIG.max_points
           )
 
@@ -55,7 +56,7 @@ module Bot
         end
 
         games = Database::Game.active.collect do |g|
-          "`#{g.owner.discord_name} (#{server.name} #{g.name}, #{g.players.count} players)`"
+          "`#{g.owner.discord_name} (#{g.server.name} #{g.name}, #{g.players.count} players)`"
         end.join(' ')
 
         "**Active Games:** #{games}"
