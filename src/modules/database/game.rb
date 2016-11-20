@@ -111,7 +111,7 @@ module Bot
       # running out of cards
       def enough_answers?
         return false if questions.empty?
-        answers.count > questions.collect(&:answers).max * players.count * CONFIG.hand_size * max_points
+        answers.count > questions.collect(&:answers).max * players.count * CONFIG.hand_size + max_points
       end
 
       # Returns whether we have enough cards (questions & answers) to
