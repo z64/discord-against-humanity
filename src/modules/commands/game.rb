@@ -49,12 +49,12 @@ module Bot
 
       # Displays active games and their owners
       command(:games) do |event|
-        if Database::Game.count.zero?
+        if Database::Game.active.empty?
           event << 'No active games..'
           return
         end
 
-        games = Database::Game.all.collect do |g|
+        games = Database::Game.active.collect do |g|
           "`#{g.owner.discord_name} (#{g.name}, #{g.players.count} players)`"
         end.join(' ')
 
