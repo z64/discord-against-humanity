@@ -75,7 +75,7 @@ module Bot
               event << "`#{u.distinct}` is already part of your game!"
             else
               next event << "Couldn't add #{u.display_name}.. (max players: #{CONFIG.max_players})" if game.players.count >= CONFIG.max_players
-              game.add_player Database::Player.create(discord_id: u.id, discord_name: u.distinct, discord_nick: u.display_name)
+              game.add_player discord_id: u.id, discord_name: u.distinct, discord_nick: u.display_name
 
               # TODO: Create Permissions template for this
               permissions = Discordrb::Permissions.new
