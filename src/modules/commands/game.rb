@@ -44,6 +44,9 @@ module Bot
           game.owner = owner
           game.save
 
+          tutorial = channels[:text].send_message CONFIG.tutorial.join("\n")
+          tutorial.pin
+
           "**Created game: #{channels[:text].mention}**"
         end
       end
