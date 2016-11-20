@@ -3,7 +3,7 @@ module Bot
     # Syncs expansions with db
     module Sync
       extend Discordrb::Commands::CommandContainer
-      command(:sync,
+      command([:sync,:hack_ur_stuff],
               help_available: false,
               description: 'syncs card database',
               usage: "#{BOT.prefix}sync") do |_event|
@@ -23,8 +23,8 @@ module Bot
           end
 
           # wipe existing cards
-          expansion.questions.all.map(&:destroy) unless expansion.questions.count.zero?
-          expansion.answers.all.map(&:destroy) unless expansion.answers.count.zero?
+          expansion.questions.map(&:destroy) unless expansion.questions.count.zero?
+          expansion.answers.map(&:destroy) unless expansion.answers.count.zero?
 
           # restock questions
           data['questions'].uniq.each do |c|

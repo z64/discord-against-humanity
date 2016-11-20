@@ -71,10 +71,11 @@ module Bot
         game = Database::Game.owner(event.user.id)
         unless game.nil?
           event.message.mentions.each do |u|
+            u = u.on event.server
             if game.players.any? { |p| p.discord_id == u.id }
               event << "`#{u.distinct}` is already part of your game!"
             else
-              game.add_player Database::Player.create(discord_id: u.id, discord_name: u.distinct)
+              game.add_player Database::Player.create(discord_id: u.id, discord_name: u.distinct, discord_nick: u.display_name)
 
               # TODO: Create Permissions template for this
               permissions = Discordrb::Permissions.new
@@ -177,6 +178,14 @@ module Bot
           if game.expansion_pools.empty?
             event << 'You must have at least one expansion '\
                      'added to your game to start a game!'
+            return
+          end
+
+          unless game.enough_cards?
+            event << 'Your game doesn\'t have enough cards '\
+                     'to complete a full game! Please add more '\
+                     'expansions with `dah.add`. Use `dah.expansions` '\
+                     'to see a list of what you can pick from.'
             return
           end
 
