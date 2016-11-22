@@ -158,16 +158,16 @@ module Bot
               usage: "#{BOT.prefix}max_points (a number)",
               max_args: 1) do |event, number|
         game = Database::Game.owner(event.user.id)
-        next 'You don\'t own any active games..' if game.nil?
+        next '❎ You don\'t own any active games..' if game.nil?
 
         next "This game is set to continue until someone gets #{game.max_points} points." unless number
 
         number = number.to_i
-        next 'You must specify a number greater than zero!' if number <= 0
+        next '❎ You must specify a number greater than zero!' if number <= 0
 
         if game.started
           max = game.players.collect(&:score).max + 1
-          next "You must specify a number greater than the highest score right now. (#{max} or greater)" if number < max
+          next "❎ You must specify a number greater than the highest score right now. (#{max} or greater)" if number < max
         end
 
         game.update max_points: number
