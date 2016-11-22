@@ -41,6 +41,8 @@ tutorial:
   - Remove expansions with.. you guessed it! `dah.remove`
   -
   - 3. Ready to play? Run `dah.start` and let's get started!
+  - The game will continue until the maximum points are reached.
+  - Configure the maximum points for your game with `dah.max_points (number)`!
   -
   - 🙇 **As a player..**
   - 1. Each round, I will direct-message you your cards.
