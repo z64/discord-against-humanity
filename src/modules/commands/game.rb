@@ -165,7 +165,7 @@ module Bot
 
         if game.started
           max = game.players.collect(&:score).max + 1
-          next "You must specify a number greater than the highest score right now (#{max} or greater)" if number < max
+          next "You must specify a number greater than the highest score right now. (#{max} or greater)" if number < max
         end
 
         game.update max_points: number
