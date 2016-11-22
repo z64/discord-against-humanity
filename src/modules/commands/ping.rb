@@ -6,7 +6,7 @@ module Bot
       extend Discordrb::Commands::CommandContainer
       command(:ping, help_available: false) do |event|
         break unless event.user.id == CONFIG.owner
-        "`#{event.timestamp - Time.now}ms`"
+        "`#{Time.now - event.timestamp}ms`"
       end
     end
   end
