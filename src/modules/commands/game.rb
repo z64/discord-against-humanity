@@ -160,6 +160,8 @@ module Bot
         game = Database::Game.owner(event.user.id)
         next 'You don\'t own any active games..' if game.nil?
 
+        next "This game is set to continue until someone gets #{game.max_points} points." unless number
+
         number = number.to_i
         next 'You must specify a number greater than zero!' if number <= 0
 
