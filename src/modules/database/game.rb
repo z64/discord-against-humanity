@@ -54,6 +54,9 @@ module Bot
       def delete_channels
         text_channel.delete
         voice_channel.delete
+      rescue
+        # Silently fail if we can't delete channels
+        # for some reason (channel was deleted, or we lost perms somehow)
       end
 
       # Starts a game
