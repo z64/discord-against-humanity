@@ -82,7 +82,8 @@ module Bot
             response.first.player.update_score!
             game.text_channel.send_message(
               "**#{round.question.substitute(response.map(&:answer))}**\n"\
-              "#{response.first.player.discord_user.mention} has won this round!🥇"
+              "#{response.first.player.discord_user.mention} has won this round!🥇",
+              game.use_tts
             )
 
           when :EXECUTE_PLAY
