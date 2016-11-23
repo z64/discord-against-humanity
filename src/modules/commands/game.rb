@@ -174,6 +174,15 @@ module Bot
         '☑️'
       end
 
+      command(:tts, description: 'toggles the bot\'s usage of tts when displaying the winning card') do |event|
+        game = Database::Game.owner(event.user.id)
+        next '❎ You don\'t own any active games..' if game.nil?
+
+        game.update use_tts: !game.use_tts
+
+        "**TTS** #{game.use_tts ? '👍' : '👎'}"
+      end
+
       # Starts a game
       command(:start) do |event|
         game = Database::Game.owner(event.user.id)
