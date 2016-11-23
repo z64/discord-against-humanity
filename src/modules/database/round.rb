@@ -15,7 +15,7 @@ module Bot
 
       # Updates a round message, or posts one of it doesn't exist.
       def update_message!
-        if message.nil?
+        if winner.nil?
           m = game.text_channel.send_message(generate_message)
           update(message_id: m.id)
           # m.pin
