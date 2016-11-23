@@ -10,7 +10,7 @@ module Bot
           'Use `dah.end` to end an active game that you host.'
         else
           # Create channels
-          game_id = Database::Game.count + 1
+          game_id = Database::Game.last.id + 1
           channels = {
             text: event.server.create_channel("game_#{game_id}", 0),
             voice: event.server.create_channel("game_#{game_id}", 2)
