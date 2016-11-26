@@ -6,7 +6,7 @@ module Bot
 
       class UrbanDictionary::Definition
         def long?
-          text.length + example.length > 1900
+          text.length + example.length > 1200
         end
       end
 
