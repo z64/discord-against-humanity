@@ -52,11 +52,11 @@ module Bot
 
       # Deletes Discord channels for the game
       def delete_channels
-        text_channel.delete
-        voice_channel.delete
+        text_channel.delete if text_channel
+        voice_channel.delete if voice_channel
       rescue
         # Silently fail if we can't delete channels
-        # for some reason (channel was deleted, or we lost perms somehow)
+        # for some reason (we lost perms somehow)
       end
 
       # Starts a game
