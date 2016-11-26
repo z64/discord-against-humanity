@@ -1,0 +1,2 @@
+module UrbanDictionary
+end
