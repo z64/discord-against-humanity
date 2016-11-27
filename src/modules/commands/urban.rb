@@ -6,7 +6,7 @@ module Bot
 
       class UrbanDictionary::Definition
         def long?
-          text.length + example.length > 1200
+          [text.length, example.length].any? { |e| e > 1024 }
         end
       end
 
