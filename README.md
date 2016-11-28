@@ -2,7 +2,7 @@
 
 DAH is Cards Against Humanity, integrated into Discord.
 
-![logo](http://imgur.com/MiqYOYD.png)
+![logo](http://i.imgur.com/2R6gSEV.png)
 
 **Join the server:** (DM me for an invite if you are interested in participating in early development)
 
