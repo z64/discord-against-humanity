@@ -183,6 +183,14 @@ module Bot
         "**TTS** #{game.use_tts ? '👍' : '👎'}"
       end
 
+      command(:score, description: 'displays your current score') do |event|
+        game = Database::Game.owner(event.user.id)
+        next '❎ You don\'t own any active games..' if game.nil?
+
+        player = game.players.find { |p| p.discord_id == event.user.id }
+        "Your score in `#{game.name}` is: `#{player.score}`"
+      end
+
       # Starts a game
       command(:start) do |event|
         game = Database::Game.owner(event.user.id)

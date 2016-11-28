@@ -83,7 +83,8 @@ module Bot
             game.text_channel.send_message(
               "**#{round.question.substitute(response.map(&:answer))}**\n"\
               "#{response.first.player.discord_user.mention} has won this round!🥇",
-              game.use_tts
+              game.use_tts,
+              game.generate_embed
             )
 
           when :EXECUTE_PLAY
