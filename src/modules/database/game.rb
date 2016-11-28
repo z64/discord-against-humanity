@@ -160,7 +160,7 @@ module Bot
         embed = Discordrb::Webhooks::Embed.new
         embed.title = 'Scores'
         ladder = (1..players.count).to_a.join "\n"
-        pl = players.sort_by(&:score).reverse
+        pl = Player.where(game: self).all.sort_by(&:score).reverse
         embed.add_field name: '#', value: ladder, inline: true
         embed.add_field name: 'Name', value: pl.collect(&:discord_name).join("\n"), inline: true
         embed.add_field name: 'Score', value: pl.collect(&:score).join("\n"), inline: true
