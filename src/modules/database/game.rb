@@ -159,6 +159,7 @@ module Bot
       def generate_embed
         embed = Discordrb::Webhooks::Embed.new
         embed.title = 'Scores'
+        embed.color = 44783
         ladder = (1..players.count).to_a.join "\n"
         pl = Player.where(game: self).all.sort_by(&:score).reverse
         embed.add_field name: '#', value: ladder, inline: true
