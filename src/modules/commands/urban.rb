@@ -19,9 +19,10 @@ module Bot
         next "Couldn't find anything for `#{term}` 😕" unless word
 
         event.channel.send_embed do |e|
-          e.description = '**Too long to display! Visit the URL by clicking above.**' if word.long?
-          e.add_field name: 'Definition', value: word.text, inline: false unless word.long?
-          e.add_field name: 'Example', value: "*#{word.example.gsub('*','')}*", inline: false if word.example unless word.long?
+          e.add_field name: 'Definition',
+            value: word.long? ? "#{word.text[0..600].strip}... [(Read More)](#{word.url})" : word.text, inline: false
+          e.add_field name: 'Example',
+            value: "*#{word.long? ? word.example.gsub('*','')[0..600].strip + '...' : word.example.gsub('*','')}*", inline: false if word.example
           e.add_field name: "\u200B", value: "⬆️ `#{word.thumbs_up}` ⬇️ `#{word.thumbs_down}`", inline: false
           e.author = {
             icon_url: 'http://www.dimensionalbranding.com/userfiles/urban_dictionary.jpg',
