@@ -41,6 +41,12 @@ module Bot
           e.color = 5_800_090
         end
       end
+      
+      module_function
+      def truncate(text, append = '')
+        maxlength = 1023 - append.length
+        text[0..maxlength].strip + append
+      end
     end
   end
 end
