@@ -4,15 +4,15 @@ module Bot
     module Urban
       extend Discordrb::Commands::CommandContainer
 
-
-        class UrbanDictionary::Definition
-          def long_text?
-            text.length > 1023
-          end
-          def long_example?
-            example.length > 1023
-          end
+      class UrbanDictionary::Definition
+        def long_text?
+          text.length > 1023
         end
+
+        def long_example?
+          example.length > 1023
+        end
+      end
 
       command([:ud, :urban],
               description: 'look up a word on Urban Dictionary',
@@ -41,8 +41,9 @@ module Bot
           e.color = 5_800_090
         end
       end
-      
+
       module_function
+
       def truncate(text, append = '')
         maxlength = 1023 - append.length
         text[0..maxlength].strip + append
