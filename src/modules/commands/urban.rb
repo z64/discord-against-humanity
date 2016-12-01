@@ -6,11 +6,11 @@ module Bot
 
       class UrbanDictionary::Definition
         def long_text?
-          text.length > 1023
+          text.length > 1024
         end
 
         def long_example?
-          example.length > 1023
+          example.length > 1024
         end
       end
 
@@ -45,8 +45,8 @@ module Bot
       module_function
 
       def truncate(text, append = '')
-        maxlength = 1023 - append.length
-        text[0..maxlength].strip + append
+        maxlength = 1024 - append.length
+        text[0...maxlength].strip + append
       end
     end
   end
