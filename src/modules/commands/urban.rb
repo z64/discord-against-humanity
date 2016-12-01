@@ -25,11 +25,9 @@ module Bot
         word.example.delete!('*')
 
         event.channel.send_embed do |e|
-          e.add_field name: 'Definition',
-                      value: word.long_text? ? truncate(word.text, url) : word.text, inline: false
+          e.add_field name: 'Definition', value: word.long_text? ? truncate(word.text, url) : word.text, inline: false
           if word.example
-            e.add_field name: 'Example',
-                        value: word.long_example? ? truncate(word.example, '...') : word.example, inline: false
+            e.add_field name: 'Example', value: word.long_example? ? truncate(word.example, '...') : word.example, inline: false
           end
           e.add_field name: "\u200B", value: "⬆️ `#{word.thumbs_up}` ⬇️ `#{word.thumbs_down}`", inline: false
           e.author = {
@@ -38,7 +36,7 @@ module Bot
             url: word.url
           }
           e.footer = { text: "Author: #{word.author}" }
-          e.color = 5_800_090
+          e.color = 5800090
         end
       end
 
