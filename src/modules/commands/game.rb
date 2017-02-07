@@ -117,14 +117,10 @@ module Bot
             elsif name.downcase == "markov"
               corpus = File.read("#{Dir.pwd}/data/dah-cards/markov.txt")
               text = RubyMarkovify::Text.new(corpus, 2)
-              cnt = 0 
               ans = Array.new
-              until cnt == 250 do
-                blackcard = text.make_sentence(nil, {:tries=>10000})
-                if ! ans.include?(blackcard)
-                  ans << blackcard
-                  cnt += 1
-                end
+              until ans.size == 250 do
+                ans << text.make_sentence(nil, {:tries=>30000})
+                ans.uniq!
               end
               #Create the markov expansion with a player identifier
               expansion = Database::Expansion.find(name: "markov_#{game.owner.discord_id}")
