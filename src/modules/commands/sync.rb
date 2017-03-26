@@ -14,13 +14,13 @@ module Bot
           data = YAML.load_file(f)
 
           # find existing expansion, otherwise create a new one
-          expansion = Database::Expansion.find(name: data['expansion'])
+          expansion = Database::Expansion.where(name: data['expansion']).first
           if expansion.nil?
             expansion = Database::Expansion.create(name: data['expansion'])
             if data['authors']
-              expansion.update(authors: data['authors'].join(', '))
+              expansion.update(authors: data['authors'])
             else
-              expansion.update(authors: 'cah')
+              expansion.update(authors: ['cah'])
             end
           end
 
