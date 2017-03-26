@@ -8,7 +8,7 @@ module Bot
               usage: "#{BOT.prefix}expansion name",
               min_args: 1) do |event, *name|
         name = name.join(' ')
-        expansion = Database::Expansion.find(Sequel.ilike(:name, name))
+        expansion = Database::Expansion.where(name: name).first
         # TODO: rework below to use #substitute
         unless expansion.nil?
           # fetch a sample
@@ -30,7 +30,7 @@ module Bot
           event << "🗃 __Expansion__: **#{expansion.name}**"
           event << '```cs'
           event << "authors: #{expansion.authors}"
-          event << "cards: #{expansion.cards} "\
+          event << "cards: #{expansion.card_count} "\
                    "(#{expansion.questions.count} questions,"\
                    " #{expansion.answers.count} answers)"
           event << "sample: \"#{sample}\""
@@ -44,12 +44,12 @@ module Bot
               description: 'displays a list of expansions',
               usage: "#{BOT.prefix}expansions") do |event|
         expansions = Database::Expansion.all
-                                        .collect { |e| "`#{e.name} (#{e.cards})`" }
+                                        .collect { |e| "`#{e.name} (#{e.card_count})`" }
                                         .join('▫️')
         event << '**Available Expansions**'
         event << expansions.to_s
 
-        game = Database::Game.owner(event.user.id)
+        game = nil # Database::Game.owner(event.user.id)
         unless game.nil?
           event << ''
           event << '**Expansions in Your Game**'
