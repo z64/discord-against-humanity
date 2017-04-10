@@ -5,8 +5,12 @@ module Bot
       extend Discordrb::Commands::CommandContainer
 
       class UrbanDictionary::Definition
-        def long?
-          [text.length, example.length].any? { |e| e > 1024 }
+        def long_text?
+          text.length > 1024
+        end
+
+        def long_example?
+          example.length > 1024
         end
       end
 
@@ -17,20 +21,30 @@ module Bot
         word   = UrbanDictionary.random.first if term.empty?
         word ||= UrbanDictionary.define(term).first
         next "Couldn't find anything for `#{term}` 😕" unless word
+        url = "... [(Read More)](#{word.url})"
+        word.example.delete!('*')
 
         event.channel.send_embed do |e|
-          e.description = '**Too long to display! Visit the URL by clicking above.**' if word.long?
-          e.add_field name: 'Definition', value: word.text, inline: false unless word.long?
-          e.add_field name: 'Example', value: "*#{word.example}*", inline: false if word.example unless word.long?
+          e.add_field name: 'Definition', value: word.long_text? ? truncate(word.text, url) : word.text, inline: false
+          if word.example
+            e.add_field name: 'Example', value: word.long_example? ? truncate(word.example, '...') : word.example, inline: false
+          end
           e.add_field name: "\u200B", value: "⬆️ `#{word.thumbs_up}` ⬇️ `#{word.thumbs_down}`", inline: false
           e.author = {
             icon_url: 'http://www.dimensionalbranding.com/userfiles/urban_dictionary.jpg',
             name: word.word,
             url: word.url
           }
-          e.footer = { text: "Author: #{word.author}"}
+          e.footer = { text: "Author: #{word.author}" }
           e.color = 5800090
         end
+      end
+
+      module_function
+
+      def truncate(text, append = '')
+        maxlength = 1024 - append.length
+        text[0...maxlength].strip + append
       end
     end
   end
