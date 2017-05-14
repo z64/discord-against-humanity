@@ -23,7 +23,7 @@ module Bot
           channels.each do |_, c|
             c.define_overwrite(event.bot.profile, permissions, nil)
             c.define_overwrite(event.user, permissions, nil)
-            c.define_overwrite(event.server.roles.first, nil, permissions)
+            c.define_overwrite(event.server.everyone_role, nil, permissions)
           end
 
           # Create game
