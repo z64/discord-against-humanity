@@ -82,7 +82,7 @@ module Bot
               permissions.can_read_messages = true
               permissions.can_connect       = true
               [game.text_channel, game.voice_channel].each do |c|
-                c.define_overwrite(u, permissions, nil)
+                c.define_overwrite(u, permissions, 0)
               end
               event << "Added #{u.distinct} to your game!"
             end
