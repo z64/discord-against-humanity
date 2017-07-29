@@ -1,6 +1,7 @@
 # Gems
 require 'bundler/setup'
 require 'discordrb'
+require 'ruby_markovify'
 require 'yaml'
 
 # The main bot module.
@@ -34,7 +35,6 @@ module Bot
   DiscordEvents.constants.each do |mod|
     BOT.include! DiscordEvents.const_get mod
   end
-
   # Run the bot
   BOT.run
 end

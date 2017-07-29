@@ -10,7 +10,7 @@ module Bot
           'Use `dah.end` to end an active game that you host.'
         else
           # Create channels
-          game_id = Database::DB[:sqlite_sequence].where(name: 'games').first[:seq] + 1
+          game_id = Database::Game.count.zero? ? 1 : Database::DB[:sqlite_sequence].where(name: 'games').first[:seq] + 1
           channels = {
             text: event.server.create_channel("game_#{game_id}", 0),
             voice: event.server.create_channel("game_#{game_id}", 2)
@@ -111,9 +111,32 @@ module Bot
 
         names.split(',').map(&:strip).each do |name|
           expansion = Database::Expansion.find(Sequel.ilike(:name, name))
-          unless expansion.nil?
+          unless expansion.nil? && !name.downcase == "markov"
             if game.expansion_pools.find { |e| e.expansion == expansion }
               event << "Expansion `#{expansion.name}` is already in your game."
+            elsif name.downcase == "markov"
+              corpus = File.read("#{Dir.pwd}/data/dah-cards/markov.txt")
+              text = RubyMarkovify::Text.new(corpus, 2)
+              ans = Array.new
+              until ans.size == 250 do
+                ans << text.make_sentence(nil, {:tries=>30000})
+                ans.uniq!
+              end
+              #Create the markov expansion with a player identifier
+              expansion = Database::Expansion.find(name: "markov_#{game.owner.discord_id}")
+              if expansion.nil?
+                expansion = Database::Expansion.create(name: "markov_#{game.owner.discord_id}")
+                expansion.update(authors: 'markov')
+              end
+              #Add the answers to the DB
+              ans.each do |c|
+                Database::Answer.create(
+                  text: c,
+                  expansion: expansion
+                ) 
+              end
+              game.add_expansion_pool expansion: expansion
+              event << "Markov expansion added."
             else
               game.add_expansion_pool expansion: expansion
               event << "Added expansion: `#{expansion.name}`"
@@ -221,7 +244,13 @@ module Bot
       command(:end) do |event|
         game = Database::Game.find text_channel_id: event.channel.id
         next 'This isn\'t a channel with an active game..' if game.nil?
-        game.end! if game.owner.discord_id == event.user.id
+        if game.owner.discord_id == event.user.id
+          expansion = Database::Expansion.find(name: "markov_#{game.owner.discord_id}")
+          unless expansion.nil?
+            expansion.answers.map(&:destroy) unless expansion.answers.count.zero?
+          end
+          game.end!
+        end
         nil
       end
     end
